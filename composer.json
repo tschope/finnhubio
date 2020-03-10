@@ -1,0 +1,21 @@
+{
+    "name": "tschope/finnhubio",
+    "description": "This lib is a simple integration with Finnhub.io to get stock market details",
+    "type": "library",
+    "require": {
+        "guzzlehttp/guzzle": "~5.3|~7.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rodrigo Tschope",
+            "email": "tschope@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Tschope\\Finnhubio\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
