@@ -17,5 +17,5 @@
             "Tschope\\Finnhubio\\": "src/"
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "0.1"
 }
