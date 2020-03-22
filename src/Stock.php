@@ -62,7 +62,7 @@ class Stock extends Finnhubio
     {
         $this->getParams['query']['symbol'] = $symbol;
 
-        return $this->response('peers');
+        return $this->response('stock/peers');
     }
 
     public function earnings(String $symbol)
