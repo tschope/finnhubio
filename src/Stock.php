@@ -3,38 +3,43 @@
 namespace Tschope\Finnhubio;
 
 use GuzzleHttp\Psr7;
+use GuzzleHttp\Psr7\Uri;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Exception\ClientException;
+use GuzzleHttp\TransferStats;
+use Psr\Http\Message\UriInterface;
 
 class Stock extends Finnhubio
 {
+
     public function profile(String $symbol = null, String $isin = null, String $cusip = null)
     {
         $this->getParams['query']['symbol'] = $symbol;
         $this->getParams['query']['isin'] = $isin;
         $this->getParams['query']['cusip'] = $cusip;
 
-        return $this->response('profile');
+        return $this->response('stock/profile');
     }
 
     public function ceoCompensation(String $symbol)
     {
         $this->getParams['query']['symbol'] = $symbol;
 
-        return $this->response('ceo-compensation');
+        return $this->response('stock/ceo-compensation');
     }
 
     public function executive(String $symbol)
     {
         $this->getParams['query']['symbol'] = $symbol;
 
-        return $this->response('executive');
+        return $this->response('stock/executive');
     }
 
     public function recommendation(String $symbol)
     {
         $this->getParams['query']['symbol'] = $symbol;
 
-        return $this->response('recommendation');
+        return $this->response('stock/recommendation');
     }
 
     public function priceTarget(String $symbol)
@@ -77,14 +82,14 @@ class Stock extends Finnhubio
      * @param string $metric price, valuation, growth, margin, management, financialStrength, perShare
      * @return \Illuminate\Http\Response
      *
-        symbol
-        Symbol of the company.
+    symbol
+    Symbol of the company.
 
-        metricType
-        Metric type.
+    metricType
+    Metric type.
 
-        metric
-        Map key-value pair of metrics. Unit of metric type growth, and margin is (%). For other metric types, unit is reported currency which can be obtained with Company Profile
+    metric
+    Map key-value pair of metrics. Unit of metric type growth, and margin is (%). For other metric types, unit is reported currency which can be obtained with Company Profile
      */
 
     public function metrics(String $symbol, $metric = 'margin')
@@ -136,7 +141,7 @@ class Stock extends Finnhubio
     {
         $this->getParams['query']['symbol'] = $symbol;
 
-        return $this->response('quote');
+        return $this->response('quote', '');
     }
 
     public function candle(String $symbol, $resolution = '15', $from = null, $to = null, $adjusted = 'false', $count = '1')
@@ -188,10 +193,10 @@ class Stock extends Finnhubio
         return $this->response('split');
     }
 
-    private function response($uri)
+    private function response($uri, $patch = 'stock/')
     {
         try {
-            $res = $this->httpClient->request('GET', $uri, $this->getParams);
+            $res = $this->httpClient->request('GET', $patch.$uri, $this->getParams);
             return $this->sendResponse($res->getBody());
         } catch (ClientException $e) {
             if ($e->getStatusCode() == 429) {
