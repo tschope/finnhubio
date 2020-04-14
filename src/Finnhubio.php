@@ -25,9 +25,9 @@ class Finnhubio
     /**
      * success response method.
      *
-     * @return \Illuminate\Http\Response
+     * @return object
      */
-    protected function sendResponse($result, $message = '', $code = 200)
+    protected function sendResponse($result, $message = '')
     {
         $response = [
             'success' => true,
@@ -35,20 +35,20 @@ class Finnhubio
             'message' => $message,
         ];
 
-
-        return response()->json($response, $code);
+        return (object)$response;
     }
 
 
     /**
      * return error response.
      *
-     * @return \Illuminate\Http\Response
+     * @return object
      */
-    protected function sendError($error, $errorMessages = [], $code = 404)
+    protected function sendError($error, $errorMessages = [])
     {
         $response = [
             'success' => false,
+            'data' => null,
             'message' => $error,
         ];
 
@@ -57,7 +57,6 @@ class Finnhubio
             $response['errors'] = $errorMessages;
         }
 
-
-        return response()->json($response, $code);
+        return (object)$response;
     }
 }

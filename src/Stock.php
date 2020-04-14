@@ -18,28 +18,28 @@ class Stock extends Finnhubio
         $this->getParams['query']['isin'] = $isin;
         $this->getParams['query']['cusip'] = $cusip;
 
-        return $this->response('stock/profile');
+        return $this->response('profile');
     }
 
     public function ceoCompensation(String $symbol)
     {
         $this->getParams['query']['symbol'] = $symbol;
 
-        return $this->response('stock/ceo-compensation');
+        return $this->response('ceo-compensation');
     }
 
     public function executive(String $symbol)
     {
         $this->getParams['query']['symbol'] = $symbol;
 
-        return $this->response('stock/executive');
+        return $this->response('executive');
     }
 
     public function recommendation(String $symbol)
     {
         $this->getParams['query']['symbol'] = $symbol;
 
-        return $this->response('stock/recommendation');
+        return $this->response('recommendation');
     }
 
     public function priceTarget(String $symbol)
@@ -144,14 +144,13 @@ class Stock extends Finnhubio
         return $this->response('quote', '');
     }
 
-    public function candle(String $symbol, $resolution = '15', $from = null, $to = null, $adjusted = 'false', $count = '1')
+    public function candle(String $symbol, $resolution = '15', $from = null, $to = null, $adjusted = 'false')
     {
         $this->getParams['query']['symbol'] = $symbol;
         $this->getParams['query']['resolution'] = $resolution;
         $this->getParams['query']['from'] = $from;
         $this->getParams['query']['to'] = $to;
         $this->getParams['query']['adjusted'] = $adjusted;
-        $this->getParams['query']['count'] = $count;
         $this->getParams['query']['format'] = 'json';
 
         return $this->response('candle');
@@ -199,10 +198,10 @@ class Stock extends Finnhubio
             $res = $this->httpClient->request('GET', $patch.$uri, $this->getParams);
             return $this->sendResponse($res->getBody());
         } catch (ClientException $e) {
-            if ($e->getStatusCode() == 429) {
-                return $this->sendError('You have exceeded your limit. Try again later.', [], 429);
+            if ($e->getCode() == 429) {
+                return $this->sendError('You have exceeded your limit. Try again later.', []);
             } else {
-                return $this->sendError(Psr7\str($e->getResponse()), [],$e->getStatusCode());
+                return $this->sendError(Psr7\str($e->getResponse()), [],$e->getCode());
             }
         }
 
