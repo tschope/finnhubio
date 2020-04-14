@@ -25,9 +25,11 @@ class Finnhubio
     /**
      * success response method.
      *
+     * @param $result
+     * @param  null  $message
      * @return object
      */
-    protected function sendResponse($result, $message = '')
+    protected function sendResponse($result, $message = null)
     {
         $response = [
             'success' => true,
@@ -42,6 +44,8 @@ class Finnhubio
     /**
      * return error response.
      *
+     * @param $error
+     * @param  array  $errorMessages
      * @return object
      */
     protected function sendError($error, $errorMessages = [])

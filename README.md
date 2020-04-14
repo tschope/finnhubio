@@ -15,7 +15,7 @@ This is a wrapper for the [https://finnhub.io/docs/api](https://finnhub.io/docs/
 ```php
 Route::get('/', function () {
     $stock = new \Tschope\Finnhubio\Stock();
-    return $stock->quote('MGLU3.SA');
+    return response()->json($stock->quote('MGLU3.SA'));
 });
 ```
 
